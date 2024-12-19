@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "name": "shib-assignment",
+  "version": "1.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

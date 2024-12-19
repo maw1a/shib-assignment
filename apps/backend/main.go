@@ -33,8 +33,25 @@ func getRouter(client *ethclient.Client, ph *contract.Phantom) *gin.Engine {
 	router := gin.Default()
 
 	router.GET("/", api.Healthcheck)
-	router.POST("/nft/mint", api.MintNFT(client, ph))
-	router.GET("/nft", api.OwnedNFT(client, ph))
+	router.GET("/nft", CORSMiddleware(), api.OwnedNFT(client, ph))
+	router.OPTIONS("/nft/mint", CORSMiddleware())
+	router.POST("/nft/mint", CORSMiddleware(), api.MintNFT(client, ph))
 
 	return router
+}
+
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
 }

@@ -2,12 +2,16 @@
   "private": true,
   "name": "shib-assignment",
   "version": "1.0.0",
+  "scripts": {
+    "dev": "concurrently \"yarn workspace shib-backend dev\" \"yarn workspace shib-web dev\""
+  },
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "license": "MIT",
   "devDependencies": {
+    "concurrently": "^9.1.0",
     "nodemon": "^3.1.9"
   }
 }
